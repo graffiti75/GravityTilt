@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import com.cericatto.gravitytilt.ui.TiltSensorScreen
 import com.cericatto.gravitytilt.ui.home.HomeScreenRoot
 import com.cericatto.gravitytilt.ui.theme.GravityTiltTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,7 +24,11 @@ class MainActivity : ComponentActivity() {
 					modifier = Modifier
 						.fillMaxSize()
 				) { innerPadding ->
-					HomeScreenRoot(
+//					HomeScreenRoot(
+//						modifier = Modifier
+//							.padding(innerPadding)
+//					)
+					TiltSensorScreen(
 						modifier = Modifier
 							.padding(innerPadding)
 					)
