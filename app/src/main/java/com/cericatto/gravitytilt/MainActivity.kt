@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.cericatto.gravitytilt.ui.TiltSensorScreen
-import com.cericatto.gravitytilt.ui.home.HomeScreenRoot
+import com.cericatto.gravitytilt.ui.SpacecraftScreen
+import com.cericatto.gravitytilt.ui.home.OptionPlanet
 import com.cericatto.gravitytilt.ui.theme.GravityTiltTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,7 +28,8 @@ class MainActivity : ComponentActivity() {
 //						modifier = Modifier
 //							.padding(innerPadding)
 //					)
-					TiltSensorScreen(
+					SpacecraftScreen(
+						planet = OptionPlanet.MARS,
 						modifier = Modifier
 							.padding(innerPadding)
 					)
