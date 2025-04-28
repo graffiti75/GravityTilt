@@ -10,4 +10,4 @@ Here is the [Gist I created](https://gist.github.com/graffiti75/725b5ba972d1b1fc
 
 [Link to the video](https://www.youtube.com/watch?v=pDdsfpP0u2o)
 
-<img src="media/image" alt="Sample Video" width="320" height="694">
+<img src="media/image.png" alt="Sample Video" width="320" height="694">
