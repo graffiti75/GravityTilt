@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cericatto.gravitytilt.R
+import com.cericatto.gravitytilt.ui.SpacecraftScreen
 import com.cericatto.gravitytilt.ui.theme.backgroundFirst
 import com.cericatto.gravitytilt.ui.theme.backgroundLast
 
@@ -106,12 +107,17 @@ fun GravityTilt(
 			modifier = Modifier
 				.align(Alignment.BottomStart)
 		)
+		/*
 		Image(
 			painter = painterResource(R.drawable.ufo),
 			contentDescription = "UFO",
 			contentScale = ContentScale.Crop,
 			modifier = Modifier
 				.align(Alignment.Center)
+		)
+		 */
+		SpacecraftScreen(
+			option = state.option,
 		)
 	}
 }
@@ -124,11 +130,11 @@ fun GravityToggle(
 ) {
 	val duration = 1000
 	val earthAlpha by animateFloatAsState(
-		targetValue = if (option == OptionPlanet.EARTH) 0f else 1f,
+		targetValue = if (option == OptionPlanet.EARTH) 1f else 0f,
 		animationSpec = tween(durationMillis = duration)
 	)
 	val marsAlpha by animateFloatAsState(
-		targetValue = if (option == OptionPlanet.MARS) 0f else 1f,
+		targetValue = if (option == OptionPlanet.MARS) 1f else 0f,
 		animationSpec = tween(durationMillis = duration)
 	)
 	Row(

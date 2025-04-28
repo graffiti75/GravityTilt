@@ -31,10 +31,10 @@ class HomeScreenViewModel @Inject constructor(): ViewModel() {
 	private fun onToggleButton() {
 		_state.update { state ->
 			state.copy(
-				option = if (_state.value.option == OptionPlanet.MARS) {
-					OptionPlanet.EARTH
-				} else {
+				option = if (_state.value.option == OptionPlanet.EARTH) {
 					OptionPlanet.MARS
+				} else {
+					OptionPlanet.EARTH
 				}
 			)
 		}
