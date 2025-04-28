@@ -5,7 +5,6 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,7 +30,6 @@ import com.cericatto.gravitytilt.ui.home.OptionPlanet
 import kotlinx.coroutines.delay
 import kotlin.math.ln
 import kotlin.math.roundToInt
-import kotlin.math.sin
 import kotlin.math.sqrt
 
 @Composable
@@ -50,24 +48,6 @@ fun SpacecraftScreen(
 	var velX by remember { mutableFloatStateOf(0f) }
 	var velY by remember { mutableFloatStateOf(0f) }
 	var lastTime by remember { mutableLongStateOf(0L) }
-
-	val g = when (option) {
-		OptionPlanet.EARTH -> 98.1f
-		OptionPlanet.MARS -> 37.2f
-	}
-
-	val lambda = when (option) {
-		OptionPlanet.EARTH -> -ln(0.9f)
-		OptionPlanet.MARS -> -ln(0.99f)
-	}
-
-	val maxSpeed = when (option) {
-		OptionPlanet.EARTH -> 500f
-		OptionPlanet.MARS -> Float.MAX_VALUE
-	}
-
-	println("option: $option")
-	println("g: $g")
 
 	val sensorListener = remember {
 		object : SensorEventListener {
@@ -97,7 +77,7 @@ fun SpacecraftScreen(
 		}
 	}
 
-	LaunchedEffect(Unit) {
+	LaunchedEffect(option) {
 		lastTime = System.nanoTime()
 		while (true) {
 			delay(16)
@@ -105,33 +85,51 @@ fun SpacecraftScreen(
 			val deltaTime = (currentTime - lastTime) / 1_000_000_000f
 			lastTime = currentTime
 
+			val g = when (option) {
+				OptionPlanet.EARTH -> 98.1f
+				OptionPlanet.MARS -> 37.2f
+			}
+
+			val d = when (option) {
+				OptionPlanet.EARTH -> -ln(0.9f)
+				OptionPlanet.MARS -> -ln(0.99f)
+			}
+
+			val maxSpeed = when (option) {
+				OptionPlanet.EARTH -> 500f
+				OptionPlanet.MARS -> Float.MAX_VALUE
+			}
+
 			val k = 0.1f
 
-			val rollDegrees = Math.toDegrees(roll.toDouble()).toFloat()
-			val pitchDegrees = Math.toDegrees(pitch.toDouble()).toFloat()
-			val effectiveRoll = k * rollDegrees
-			val effectivePitch = k * pitchDegrees
+			val tiltX = Math.toDegrees(roll.toDouble()).toFloat()
+			val tiltY = Math.toDegrees(pitch.toDouble()).toFloat()
 
-			val aX = g * sin(Math.toRadians(effectiveRoll.toDouble())).toFloat()
-			val aY = -g * sin(Math.toRadians(effectivePitch.toDouble())).toFloat()
+			// Acceleration: a(t) = g * k * tilt
+			val aX = g * k * tiltX
+			val aY = -g * k * tiltY
 
-			velX = velX * (1 - lambda * deltaTime) + aX * deltaTime
-			velY = velY * (1 - lambda * deltaTime) + aY * deltaTime
+			// Friction: f(t) = d * v(t)
+			val fX = d * velX
+			val fY = d * velY
 
+			// Velocity: v(t + delta) = v(t) + (a(t) - f(t)) * delta
+			velX += (aX - fX) * deltaTime
+			velY += (aY - fY) * deltaTime
+
+			// Apply max speed
 			val speed = sqrt(velX * velX + velY * velY)
 			if (speed > maxSpeed) {
 				val scale = maxSpeed / speed
-//				velX *= if (option == OptionPlanet.MARS) scale / 10f else scale
-//				velY *= if (option == OptionPlanet.MARS) scale / 10f else scale
 				velX *= scale
 				velY *= scale
 			}
 
-			println("maxSpeed: $maxSpeed")
-			println("lambda: $lambda")
-//			println("velX: $velX, velY: $velY")
+			// Update position
 			posX += velX * deltaTime
 			posY += velY * deltaTime
+
+			println("Planet: $option, g: $g, lambda: $d, velX: $velX, velY: $velY")
 		}
 	}
 
