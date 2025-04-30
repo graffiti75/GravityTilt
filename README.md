@@ -8,6 +8,6 @@ Here is the [Gist I created](https://gist.github.com/graffiti75/725b5ba972d1b1fc
 
 # Video on Youtube
 
-[Link to the video](https://www.youtube.com/watch?v=pDdsfpP0u2o)
+[Link to the video](https://www.youtube.com/watch?v=tGJi1Dw0B9U)
 
 <img src="media/image.png" alt="Sample Video" width="320" height="694">
